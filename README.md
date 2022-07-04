@@ -37,6 +37,5 @@ Then enable and start the service:
 
 ```
 sudo systemctl daemon-reload
-sudo systemctl enable elgato-cam-bind.service 
-sudo systemctl start elgato-cam-bind.service 
+sudo systemctl enable --now elgato-cam-bind.service  
 ```
