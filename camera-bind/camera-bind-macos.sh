@@ -1,8 +1,10 @@
 #!/bin/bash
+currentPath=$( cd "$(dirname "${BASH_SOURCE[0]}")" || exit; pwd -P )
+cd "$currentPath" || exit
 
 currentStatus="Off"
 
-while [ true ]
+while true
 do
     cameraActivityLog=$(log show --predicate 'subsystem contains "com.apple.UVCExtension" and composedMessage contains "Post PowerLog"' --last 3m)
     lastSixChars=${cameraActivityLog: -6}
@@ -11,11 +13,11 @@ do
 
     if [[ $cameraStatus = "On" ]] && [[ $currentStatus = "Off" ]];
     then
-        /bin/bash /Users/abel/repos/elgato-test/switch/on.sh
+        /bin/bash ../switch/on.sh
         currentStatus="On"
     elif [[ $cameraStatus = "Off" ]] && [[ $currentStatus = "On" ]];
     then
-        /bin/bash /Users/abel/repos/elgato-test/switch/off.sh
+        /bin/bash ../switch/off.sh
         currentStatus="Off"
     fi
 
