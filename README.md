@@ -32,3 +32,11 @@ Restart=on-failure
 [Install]
 WantedBy=default.target
 ``` 
+
+Then enable and start the service: 
+
+```shell
+sudo systemctl daemon-reload
+sudo systemctl enable elgato-cam-bind.service 
+sudo systemctl start elgato-cam-bind.service 
+```
