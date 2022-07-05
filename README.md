@@ -1,5 +1,5 @@
 # Elgato Key Camera Bind
-This is an experimental script to make Elgato's Key Light Air turn on and off acording to your webcam's current status. 
+This is an experimental script to make Elgato's Key Light Air turn on and off according to your webcam's current state. 
 
 The main idea here is to automate the task of turning it on/off for people that always use it on video calls.
 
