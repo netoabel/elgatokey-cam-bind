@@ -29,7 +29,7 @@ Description=Elgato Key Camera Bind
 [Service]
 Type=simple
 User=root
-ExecStart=PATH_WHERE_YOU_CLONED_THIS_REPO/elgatokey-cam-bind/camera-bind/camera-bind-linux.sh
+ExecStart=PATH_WHERE_YOU_CLONED_THIS_REPO/elgatokey-cam-bind/camera-bind/camera-bind.sh
 Restart=on-failure
 
 [Install]
@@ -55,7 +55,7 @@ In Mac, you can make the script run as a launch agent. In order to do that, you 
 		<key>Label</key>
 		<string>com.my.elgato-cam-bind</string>
 		<key>Program</key>
-		<string>PATH_WHERE_YOU_CLONED_THIS_REPO/elgatokey-cam-bind/camera-bind/camera-bind-macos.sh</string>
+		<string>PATH_WHERE_YOU_CLONED_THIS_REPO/elgatokey-cam-bind/camera-bind/camera-bind.sh</string>
 		<key>RunAtLoad</key>
 		<true/>
 		<key>KeepAlive</key>
