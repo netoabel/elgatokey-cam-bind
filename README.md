@@ -36,7 +36,7 @@ Restart=on-failure
 WantedBy=default.target
 ```
 
-Then enable and start the service:
+Then enable and start automatically:
 
 ```
 sudo systemctl daemon-reload
