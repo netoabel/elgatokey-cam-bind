@@ -20,7 +20,7 @@ Only Linux and MacOS are supported.
 
 ### Linux
 
-In order to make the script start automatically on startup in Linux, you can create a `systemctl` daemon. To do so, create the file `/etc/systemd/system/elgato-cam-bind.service` with the following content:
+In order to make the script run automatically on startup in Linux, you can create a `systemctl` daemon. To do so, create the file `/etc/systemd/system/elgato-cam-bind.service` with the following content:
 
 ```
 [Unit]
