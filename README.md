@@ -10,13 +10,11 @@ The script tries to detect camera activity from system logs and change the Key L
 
 You can try the script by cloning this repository and then running one of the following commands:
 
-`sh ./camera-bind/camera-bind-linux.sh`
-
-or
-
-`sh ./camera-bind/camera-bind-macos.sh`
+`sh ./camera-bind/camera-bind.sh`
 
 With the script running, try to make some application use your webcam (i.e. https://meet.google.com). It should turn Elgato Key Light on and off whenever you enable/disable your webcam.
+
+Only Linux and MacOS are supported.
 
 ## How to make it run as a service
 
