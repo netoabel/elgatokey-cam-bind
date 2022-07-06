@@ -22,7 +22,7 @@ With the script running, try to make some application use your webcam (i.e. http
 
 ### Linux
 
-In order to make the script start automatically on startup in Linux, you can create a `systemctl` daemon. To do so, create the file `/etc/systemd/system/elgato-cam-bind.service` with the following contents:
+In order to make the script start automatically on startup in Linux, you can create a `systemctl` daemon. To do so, create the file `/etc/systemd/system/elgato-cam-bind.service` with the following content:
 
 ```
 [Unit]
@@ -47,7 +47,7 @@ sudo systemctl enable --now elgato-cam-bind.service
 
 ### MacOS
 
-In Mac, you can make the script run as a LaunchDaemon. In order to do that, you have to create the file `~/Library/LaunchAgents/com.my.elgato-cam-bind.plist` with the following contents:
+In Mac, you can make the script run as a LaunchDaemon. In order to do that, you have to create the file `~/Library/LaunchAgents/com.my.elgato-cam-bind.plist` with the following content:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
