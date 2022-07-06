@@ -70,5 +70,4 @@ And then run the following commands:
 
 ```
 launchctl load ~/Library/LaunchAgents/com.my.elgato-cam-bind.plist
-launchctl start com.my.elgato-cam-bind
 ```
