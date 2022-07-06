@@ -14,7 +14,7 @@ You can try the script by cloning this repository and then running one of the fo
 
 With the script running, try to make some application use your webcam (i.e. https://meet.google.com). It should turn Elgato Key Light on and off whenever you enable/disable your webcam.
 
-Only Linux and MacOS are supported.
+Only Linux and MacOS (Monterey) are supported.
 
 ## How to make it run as a service
 
