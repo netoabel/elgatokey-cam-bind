@@ -16,7 +16,7 @@ With the script running, try to make some application use your webcam (i.e. http
 
 Only Linux and MacOS are supported.
 
-## How to make it run as a service
+## How to make it run automatically
 
 ### Linux
 
@@ -36,7 +36,7 @@ Restart=on-failure
 WantedBy=default.target
 ```
 
-Then enable and start automatically:
+Then enable and start the service:
 
 ```
 sudo systemctl daemon-reload
