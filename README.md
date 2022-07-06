@@ -64,7 +64,7 @@ In Mac, you can make the script run as a launch agent. In order to do that, you 
 </plist>
 ```
 
-And then run the following commands:
+And then run the following command:
 
 ```
 launchctl load ~/Library/LaunchAgents/com.my.elgato-cam-bind.plist
