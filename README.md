@@ -47,7 +47,7 @@ sudo systemctl enable --now elgato-cam-bind.service
 
 ### MacOS
 
-In Mac, you can make the script run as a LaunchDaemon. In order to do that, you have to create the file `~/Library/LaunchAgents/com.my.elgato-cam-bind.plist` with the following content:
+In Mac, you can make the script run as a launch agent. In order to do that, you have to create the file `~/Library/LaunchAgents/com.my.elgato-cam-bind.plist` with the following content:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -66,6 +66,9 @@ In Mac, you can make the script run as a LaunchDaemon. In order to do that, you 
 </plist>
 ```
 
-And then run the following command:
+And then run the following commands:
 
-`launchctl load ~/Library/LaunchAgents/com.my.elgato-cam-bind.plist`
+```
+launchctl load ~/Library/LaunchAgents/com.my.elgato-cam-bind.plist
+launchctl start com.my.elgato-cam-bind
+```
