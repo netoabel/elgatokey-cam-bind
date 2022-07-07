@@ -22,13 +22,14 @@ isCameraOnMac(){
     cameraActivityLog=$(log show --predicate 'subsystem contains "com.apple.UVCExtension" and composedMessage contains "Post PowerLog"' --last 3m)
     lastSixChars=${cameraActivityLog: -6}
     cameraStatus=$(echo $lastSixChars | tr -cd '[:alnum:]._-')
-    [ $cameraStatus = "Off" ]; isCameraOn=$?
+    [ "$cameraStatus" = "Off" ]; isCameraOn=$?
     echo "$isCameraOn"
 }
 
 isCameraOnLinux(){
     cameraActivityLog=$(lsof /dev/video0)
-    [ -z "$cameraActivityLog" ]; isCameraOn=$?
+    firstSevenChars=${cameraActivityLog:0:7}
+    [ "$firstSevenChars" != "COMMAND" ]; isCameraOn=$?
     echo "$isCameraOn"
 }
 
