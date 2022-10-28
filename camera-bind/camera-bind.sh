@@ -19,7 +19,7 @@ case $OS in
 esac
 
 isCameraOnMac(){
-    cameraStatus=$(log show --predicate 'subsystem contains "com.apple.UVCExtension" and composedMessage contains "Post PowerLog"' --last 3m | grep -E -o '"VDCAssistant_Power_State" = [a-zA-Z]+' | tail -1 | awk '{print $3}')
+    cameraStatus=$(log show --predicate 'subsystem contains "com.apple.UVCExtension" and composedMessage contains "Post PowerLog"' --last 1d | grep -E -o '"VDCAssistant_Power_State" = [a-zA-Z]+' | tail -1 | awk '{print $3}')
     [ "$cameraStatus" = "On" ] && isCameraOn=1 || isCameraOn=0
     echo "$isCameraOn"
 }
