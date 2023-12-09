@@ -1,6 +1,6 @@
 const camera = require("./camera.js");
 const keylight = require("./keylight.js");
-const UPDATE_INTERVAL_MS = 500;
+const UPDATE_INTERVAL_MS = 1000;
 
 setInterval(updateKeylightState, UPDATE_INTERVAL_MS);
 
