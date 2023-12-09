@@ -4,7 +4,8 @@
   "description": "An application to control Elgato Key Light and bind it to camera activity",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "ncc build  -o build/lib ./index.js && pkg --target node18-macos-x64 -o build/elgatokeycam ./build/lib/index.js"
   },
   "repository": {
     "type": "git",
