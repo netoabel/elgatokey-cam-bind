@@ -1,19 +1,20 @@
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
+let lastCameraState = 0;
 
-async function getCameraState() {
+async function getState() {
   const os = process.platform;
   let cameraState = 0;
   switch (os) {
     case "darwin":
-      cameraState = await getCameraStateMac();
+      cameraState = await getStateMac();
       break;
   }
 
   return cameraState;
 }
 
-async function getCameraStateMac() {
+async function getStateMac() {
   let cameraStateBinary;
   const command =
     "log show --predicate 'subsystem contains \"com.apple.UVCExtension\" and composedMessage contains \"Post PowerLog\"' --last 1d | grep -E -o '\"VDCAssistant_Power_State\" = [a-zA-Z]+' | tail -1 | awk '{print $3}'";
@@ -46,4 +47,12 @@ async function runShellCommand(command) {
   }
 }
 
-module.exports = { getCameraState };
+function setLastState(state) {
+  lastCameraState = state;
+}
+
+function hasTheStateChanged(state) {
+  return state != lastCameraState;
+}
+
+module.exports = { hasTheStateChanged, setLastState, getState };
