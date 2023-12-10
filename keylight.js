@@ -1,6 +1,7 @@
 const axios = require("axios");
 const http = require("http");
 const args = require("yargs").argv;
+const logger = require("./util/logger/logger.js");
 
 const agentForHttp4 = new http.Agent({ family: 4 });
 const lightUrl = "http://elgato-key-light-air-ec6e.local.:9123/elgato/lights";
@@ -27,7 +28,7 @@ async function setState(state) {
       { httpAgent: agentForHttp4 }
     );
   } catch (err) {
-    console.log(err.message);
+    logger.error(err.message);
   }
 }
 
@@ -47,7 +48,7 @@ async function getCurrentState() {
       res.data.lights[0].on
     );
   } catch (err) {
-    console.log(err.message);
+    logger.error(err.message);
   }
 }
 

@@ -1,4 +1,5 @@
 const util = require("util");
+const logger = require("./util/logger/logger.js");
 const exec = util.promisify(require("child_process").exec);
 let lastCameraState = 0;
 
@@ -34,16 +35,16 @@ async function runShellCommand(command) {
   try {
     const { error, stdout, stderr } = await exec(command);
     if (error) {
-      console.log(`error: ${error.message}`);
+      logger.error(`error: ${error.message}`);
       return;
     }
     if (stderr) {
-      console.log(`stderr: ${stderr}`);
+      logger.error(`stderr: ${stderr}`);
       return;
     }
     return stdout && stdout.trim();
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }
 
