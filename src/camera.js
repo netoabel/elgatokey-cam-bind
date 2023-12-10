@@ -1,5 +1,5 @@
 const util = require("util");
-const logger = require("./util/logger/logger.js");
+const logger = require("../util/logger/logger.js");
 const exec = util.promisify(require("child_process").exec);
 let lastCameraState = 0;
 

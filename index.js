@@ -1,5 +1,5 @@
-const camera = require("./camera.js");
-const keylight = require("./keylight.js");
+const camera = require("./src/camera.js");
+const keylight = require("./src/keylight.js");
 const logger = require("./util/logger/logger.js");
 
 const UPDATE_INTERVAL_MS = 1000;
