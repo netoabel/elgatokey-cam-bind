@@ -2,9 +2,16 @@ const camera = require("./src/camera.js");
 const keylight = require("./src/keylight.js");
 const logger = require("./util/logger/logger.js");
 
-const UPDATE_INTERVAL_MS = 1000;
+const UPDATE_INTERVAL_MS = 100;
 
-setInterval(updateKeylightState, UPDATE_INTERVAL_MS);
+loop();
+
+async function loop() {
+  setTimeout(async () => {
+    await updateKeylightState();
+    await loop();
+  }, UPDATE_INTERVAL_MS);
+}
 
 async function updateKeylightState() {
   const cameraState = await camera.getState();
