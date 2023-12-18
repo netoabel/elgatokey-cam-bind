@@ -2,28 +2,22 @@ const camera = require("./src/camera.js");
 const keylight = require("./src/keylight.js");
 const logger = require("./util/logger/logger.js");
 
-const UPDATE_INTERVAL_MS = 100;
+init();
 
-loop();
-
-async function loop() {
-  setTimeout(async () => {
-    await updateKeylightState();
-    await loop();
-  }, UPDATE_INTERVAL_MS);
-}
-
-async function updateKeylightState() {
-  const cameraState = await camera.getState();
-  if (cameraState !== undefined && camera.hasTheStateChanged(cameraState)) {
-    logger.info(
-      `Camera state changed. Updating Elgato Key Light to the new state: ${cameraState}`
-    );
-    try {
-      await keylight.setState(cameraState);
-      camera.setLastState(cameraState);
-    } catch (e) {
-      logger.error(e);
-    }
-  }
+function init() {
+  camera.watchCameraLogs({
+    onStateUpdate: async (cameraState) => {
+      if (cameraState !== undefined) {
+        logger.info("Camera state changed. New state: " + cameraState);
+        try {
+          await keylight.setState(cameraState);
+        } catch (error) {
+          logger.error(error);
+        }
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 }
