@@ -1,11 +1,11 @@
 {
-  "name": "elgatokey-cam-bind",
-  "version": "1.0.0",
+  "name": "elgatokeycam",
+  "version": "1.1.0",
   "description": "An application to control Elgato Key Light and bind it to camera activity",
-  "main": "index.js",
+  "main": "./src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "ncc build  -o dist/lib ./index.js && pkg --target node18-macos-x64 -o dist/macos/elgatokeycam ./dist/lib/index.js"
+    "build": "npx tsc && ncc build -o dist/lib/ncc dist/lib/index.js && pkg --target node18-macos-x64 -o dist/macos/elgatokeycam ./dist/lib/ncc/index.js",
+    "dev": "nodemon ./src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -26,5 +26,11 @@
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1",
     "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/yargs": "^17.0.32",
+    "nodemon": "^3.0.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
   }
 }
