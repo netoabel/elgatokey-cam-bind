@@ -3,21 +3,23 @@ import * as http from "http";
 import { logger } from "./util/logger/logger";
 
 const agentForHttp4: http.Agent = new http.Agent({ family: 4 });
-const lightUrl: string =
+const keylightUrl: string =
   "http://elgato-key-light-air-ec6e.local.:9123/elgato/lights";
 
 async function turnOn(): Promise<void> {
+  logger.info("Turning Keylight On...");
   await setState(true);
 }
 
 async function turnOff(): Promise<void> {
+  logger.info("Turning Keylight Off...");
   await setState(false);
 }
 
 async function setState(state: boolean): Promise<void> {
   try {
     await axios.put(
-      lightUrl,
+      keylightUrl,
       { lights: [{ on: state }] },
       { httpAgent: agentForHttp4 }
     );
@@ -36,7 +38,7 @@ async function getCurrentState(): Promise<boolean | void> {
   let state: boolean | undefined;
 
   try {
-    const res = await axios.get(lightUrl, { httpAgent: agentForHttp4 });
+    const res = await axios.get(keylightUrl, { httpAgent: agentForHttp4 });
     state =
       res &&
       res.data &&
@@ -50,4 +52,4 @@ async function getCurrentState(): Promise<boolean | void> {
   return state;
 }
 
-export { turnOn, turnOff };
+export { toggleState, turnOn, turnOff };
