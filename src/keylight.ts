@@ -39,12 +39,7 @@ async function getCurrentState(): Promise<boolean | void> {
 
   try {
     const res = await axios.get(keylightUrl, { httpAgent: agentForHttp4 });
-    state =
-      res &&
-      res.data &&
-      res.data.lights &&
-      res.data.lights[0] &&
-      !!+res.data.lights[0].on;
+    state = !!+res?.data?.lights[0]?.on;
   } catch (err: any) {
     logger.error(err.message);
   }
