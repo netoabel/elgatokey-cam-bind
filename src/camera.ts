@@ -36,12 +36,15 @@ function watchCameraLogsMac(callbacks: CameraLogCallbacks): void {
 
 function watchCameraLogsLinux(callbacks: CameraLogCallbacks): void {
   const DEVICE_NAME = process.env.KEYCAM_DEVICE_NAME || "video0";
+  let lastState = "Unknown";
+
   const logs = spawnCameraLogProcessLinux(DEVICE_NAME);
 
   logs.stdout.setEncoding("utf8");
   logs.stdout.on("data", (data: string) => {
     const cameraState = data.indexOf(DEVICE_NAME) === -1 ? "Off" : "On";
-    if (callbacks.onData) {
+    if (callbacks.onData && cameraState !== lastState) {
+      lastState = cameraState;
       callbacks.onData(cameraState);
     }
   });
