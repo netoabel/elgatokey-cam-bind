@@ -2,63 +2,11 @@ import { logger } from "./util/logger/logger";
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import os from "os";
 
+const DEVICE_NAME = process.env.KEYCAM_DEVICE_NAME || "video0";
+
 interface CameraLogCallbacks {
-  onData?: (data: string) => void;
-  onError?: (error: Error) => void;
-}
-
-function watchCameraLogsMac(callbacks: CameraLogCallbacks): void {
-  const logs = spawnCameraLogProcessMac();
-
-  logs.stdout.setEncoding("utf8");
-  logs.stdout.on("data", (data: string) => {
-    const regex = /"VDCAssistant_Power_State"\s*=\s*([A-Za-z]+)/;
-    const match = regex.exec(data);
-    if (match) {
-      const cameraState = match[1];
-      if (callbacks.onData) {
-        callbacks.onData(cameraState);
-      }
-    }
-  });
-
-  logs.stderr.setEncoding("utf8");
-  logs.stderr.on("data", (error: Error) => {
-    if (callbacks.onError) {
-      callbacks.onError(error);
-    }
-  });
-
-  logs.on("exit", (code: any) => {
-    logger.error("child process exited with code " + code.toString());
-  });
-}
-
-function watchCameraLogsLinux(callbacks: CameraLogCallbacks): void {
-  const DEVICE_NAME = process.env.KEYCAM_DEVICE_NAME || "video0";
-  let lastState = "Unknown";
-
-  const logs = spawnCameraLogProcessLinux(DEVICE_NAME);
-
-  logs.stdout.setEncoding("utf8");
-  logs.stdout.on("data", (data: string) => {
-    const cameraState = data.indexOf(DEVICE_NAME) === -1 ? "Off" : "On";
-    if (callbacks.onData && cameraState !== lastState) {
-      lastState = cameraState;
-      callbacks.onData(cameraState);
-    }
-  });
-
-  logs.stderr.setEncoding("utf8");
-  logs.stderr.on("data", (error: Error) => {
-    if (callbacks.onError) {
-      callbacks.onError(error);
-    }
-  });
-
-  logs.on("exit", (code: any) => {
-    logger.error("child process exited with code " + code.toString());
-  });
+  onData: (data: string) => void;
+  onError: (error: Error) => void;
 }
 
 function watchCameraLogs(callbacks: CameraLogCallbacks): void {
@@ -74,7 +22,66 @@ function watchCameraLogs(callbacks: CameraLogCallbacks): void {
   }
 }
 
-function spawnCameraLogProcessMac(): ChildProcessWithoutNullStreams {
+function watchCameraLogsMac(callbacks: CameraLogCallbacks): void {
+  const logs = spawnCameraStreamProcessMac();
+  wacthStdout(logs, {
+    onData: (data) => callbacks.onData(getCameraStateFromLogMac(data)),
+    onError: callbacks.onError,
+  });
+}
+
+function watchCameraLogsLinux(callbacks: CameraLogCallbacks): void {
+  let lastState = "Unknown";
+
+  const logs = spawnCameraStreamProcessLinux(DEVICE_NAME);
+
+  wacthStdout(logs, {
+    onData: (data) => {
+      const cameraState = getCameraStateFromLogLinux(data);
+
+      if (cameraState !== lastState) {
+        lastState = cameraState;
+        callbacks.onData(cameraState);
+      }
+    },
+    onError: callbacks.onError,
+  });
+}
+
+function wacthStdout(
+  process: ChildProcessWithoutNullStreams,
+  callbacks: CameraLogCallbacks
+): void {
+  process.stdout.setEncoding("utf8");
+  process.stdout.on("data", (data: string) => {
+    if (callbacks.onData) {
+      callbacks.onData(data);
+    }
+  });
+
+  process.stderr.setEncoding("utf8");
+  process.stderr.on("data", (error: Error) => {
+    if (callbacks.onError) {
+      callbacks.onError(error);
+    }
+  });
+
+  process.on("exit", (code: any) => {
+    logger.error("child process exited with code " + code.toString());
+  });
+}
+
+function getCameraStateFromLogMac(log: string): string {
+  const regex = /"VDCAssistant_Power_State"\s*=\s*([A-Za-z]+)/;
+  const match = regex.exec(log);
+  return match ? match[1] : "";
+}
+
+function getCameraStateFromLogLinux(log: string): string {
+  return log.indexOf(DEVICE_NAME) === -1 ? "Off" : "On";
+}
+
+function spawnCameraStreamProcessMac(): ChildProcessWithoutNullStreams {
   return spawn("log", [
     "stream",
     "--predicate",
@@ -82,7 +89,7 @@ function spawnCameraLogProcessMac(): ChildProcessWithoutNullStreams {
   ]);
 }
 
-function spawnCameraLogProcessLinux(
+function spawnCameraStreamProcessLinux(
   deviceName: string
 ): ChildProcessWithoutNullStreams {
   return spawn("lsof", ["-r", "1", `/dev/${deviceName}`]);
