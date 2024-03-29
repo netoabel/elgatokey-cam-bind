@@ -1,21 +1,6 @@
 import axios from "axios";
-import axiosRetry from "axios-retry";
 import * as http from "http";
 import { logger } from "./util/logger/logger";
-
-const RETRY_BASE_INTERVAL = 1500;
-const MAX_RETRIES = 5;
-
-axiosRetry(axios, {
-  retries: MAX_RETRIES,
-  retryDelay: (retryCount) => {
-    return RETRY_BASE_INTERVAL * retryCount;
-  },
-  onRetry: (retryCount, error) => {
-    logger.error(`Request to keylight failed. ${error.cause}`);
-    logger.info(`Retrying (${retryCount})...`);
-  },
-});
 
 const agentForHttp4: http.Agent = new http.Agent({ family: 4 });
 const keylightUrl: string =
@@ -32,15 +17,11 @@ async function turnOff(): Promise<void> {
 }
 
 async function setState(state: boolean): Promise<void> {
-  try {
-    await axios.put(
-      keylightUrl,
-      { lights: [{ on: state }] },
-      { httpAgent: agentForHttp4 }
-    );
-  } catch (err: any) {
-    logger.error(err.message);
-  }
+  await axios.put(
+    keylightUrl,
+    { lights: [{ on: state }] },
+    { httpAgent: agentForHttp4 }
+  );
 }
 
 async function toggleState(): Promise<void> {
