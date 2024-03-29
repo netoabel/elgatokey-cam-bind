@@ -3,10 +3,15 @@ import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import os from "os";
 
 const DEVICE_NAME = process.env.KEYCAM_DEVICE_NAME || "video0";
+let currentCameraState = "Unknown";
 
 interface CameraLogCallbacks {
   onData: (data: string) => void;
   onError: (error: Error) => void;
+}
+
+function getCurrentCameraState(): string {
+  return currentCameraState;
 }
 
 function watchCameraLogs(callbacks: CameraLogCallbacks): void {
@@ -25,22 +30,24 @@ function watchCameraLogs(callbacks: CameraLogCallbacks): void {
 function watchCameraLogsMac(callbacks: CameraLogCallbacks): void {
   const logs = spawnCameraStreamProcessMac();
   wacthStdout(logs, {
-    onData: (data) => callbacks.onData(getCameraStateFromLogMac(data)),
+    onData: (data) => {
+      const cameraState = getCameraStateFromLogMac(data);
+      currentCameraState = cameraState;
+      callbacks.onData(cameraState);
+    },
     onError: callbacks.onError,
   });
 }
 
 function watchCameraLogsLinux(callbacks: CameraLogCallbacks): void {
-  let lastState = "Unknown";
-
   const logs = spawnCameraStreamProcessLinux(DEVICE_NAME);
 
   wacthStdout(logs, {
     onData: (data) => {
       const cameraState = getCameraStateFromLogLinux(data);
 
-      if (cameraState !== lastState) {
-        lastState = cameraState;
+      if (cameraState !== currentCameraState) {
+        currentCameraState = cameraState;
         callbacks.onData(cameraState);
       }
     },
@@ -95,4 +102,4 @@ function spawnCameraStreamProcessLinux(
   return spawn("lsof", ["-r", "1", `/dev/${deviceName}`]);
 }
 
-export { watchCameraLogs };
+export { getCurrentCameraState, watchCameraLogs };
