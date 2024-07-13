@@ -6,21 +6,11 @@ const agentForHttp4: http.Agent = new http.Agent({ family: 4 });
 const keylightUrl: string =
   "http://elgato-key-light-air-ec6e.local.:9123/elgato/lights";
 
-async function turnOn(): Promise<void> {
-  logger.info("Turning Keylight On...");
-  await setState(true);
-}
-
-async function turnOff(): Promise<void> {
-  logger.info("Turning Keylight Off...");
-  await setState(false);
-}
-
 async function setState(state: boolean): Promise<void> {
   await axios.put(
     keylightUrl,
     { lights: [{ on: state }] },
-    { httpAgent: agentForHttp4 }
+    { httpAgent: agentForHttp4 },
   );
 }
 
@@ -43,4 +33,4 @@ async function getCurrentState(): Promise<boolean | void> {
   return state;
 }
 
-export { toggleState, turnOn, turnOff };
+export { setState, toggleState };

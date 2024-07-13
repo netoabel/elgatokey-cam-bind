@@ -2,10 +2,16 @@ import * as camera from "./camera";
 import * as keylight from "./keylight";
 import { logger } from "./util/logger/logger";
 import yargs from "yargs/yargs";
+import fastq from "fastq";
+import type { queueAsPromised } from "fastq";
+
+type Event = {
+  on: boolean;
+};
 
 const argv = parseArgv();
-const MAX_RETRIES = 10;
 const RETRY_INTERVAL_MS = 5000;
+const WORKER_CONCURRENCY = 1;
 
 if (argv.toggle) {
   keylight.toggleState();
@@ -13,15 +19,29 @@ if (argv.toggle) {
   init();
 }
 
+const cmdQueue: queueAsPromised<Event> = fastq.promise(
+  worker,
+  WORKER_CONCURRENCY,
+);
+
+async function worker(evt: Event): Promise<void> {
+  console.log(`Setting camera state to ${evt.on}`);
+  try {
+    await keylight.setState(evt.on);
+    cmdQueue.resume();
+  } catch (error) {
+    cmdQueue.pause();
+    logger.error(
+      `Error while setting Keylight state. Retrying in ${RETRY_INTERVAL_MS}ms.`,
+    );
+    setTimeout(() => worker(evt), RETRY_INTERVAL_MS);
+  }
+}
+
 function init(): void {
   camera.watchCameraLogs({
     onData: async (cameraState: string) => {
-      try {
-        await updateKeylightState(cameraState);
-      } catch (error) {
-        logger.error(error);
-        retry();
-      }
+      await updateKeylightState(cameraState);
     },
     onError: (error: any) => {
       logger.error(error);
@@ -32,29 +52,11 @@ function init(): void {
 async function updateKeylightState(newState: string): Promise<void> {
   switch (newState) {
     case "On":
-      await keylight.turnOn();
+      cmdQueue.push({ on: true });
       break;
     case "Off":
-      await keylight.turnOff();
+      cmdQueue.push({ on: false });
       break;
-  }
-}
-
-function retry(count: number = 1): void {
-  if (count <= MAX_RETRIES) {
-    const nextRetryMs = count * RETRY_INTERVAL_MS;
-    logger.info(`Retrying in ${nextRetryMs} ms...`);
-
-    setTimeout(async () => {
-      logger.info(`Retrying... [${count}]`);
-
-      try {
-        await updateKeylightState(camera.getCurrentCameraState());
-      } catch (error) {
-        logger.error(error);
-        retry(count + 1);
-      }
-    }, nextRetryMs);
   }
 }
 
