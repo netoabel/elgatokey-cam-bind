@@ -25,12 +25,12 @@ const cmdQueue: queueAsPromised<Event> = fastq.promise(
 );
 
 async function worker(evt: Event): Promise<void> {
-  console.log(`Setting camera state to ${evt.on}`);
+  cmdQueue.pause();
+  console.log(`Setting keylight state to ${evt.on}`);
   try {
     await keylight.setState(evt.on);
     cmdQueue.resume();
   } catch (error) {
-    cmdQueue.pause();
     logger.error(
       `Error while setting Keylight state. Retrying in ${RETRY_INTERVAL_MS}ms.`,
     );
