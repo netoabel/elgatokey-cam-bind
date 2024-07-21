@@ -9,6 +9,7 @@ const KEYLIGHT_URL =
 const agentForHttp4: http.Agent = new http.Agent({ family: 4 });
 
 async function setState(state: boolean): Promise<void> {
+  logger.info(`Setting keylight state to: ${state}`);
   await axios.put(
     KEYLIGHT_URL,
     { lights: [{ on: state }] },
