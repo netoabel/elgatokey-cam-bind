@@ -23,7 +23,9 @@ async function onCommand(cmd: Command, retryCount: number = 0): Promise<void> {
   } catch (error) {
     logger.error("Error while executing command.");
     if (retryCount < MAX_RETRIES) {
-      logger.error(`Retrying (${retryCount + 1}) in ${RETRY_INTERVAL_MS} ms.`);
+      logger.error(
+        `Retrying (${retryCount + 1}) in ${RETRY_INTERVAL_MS} ms. Current queue size: ${cmdQueue.length()}.`,
+      );
       setTimeout(() => onCommand(cmd, retryCount + 1), RETRY_INTERVAL_MS);
     } else {
       cmdQueue.resume();
