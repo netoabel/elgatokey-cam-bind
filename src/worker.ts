@@ -4,7 +4,7 @@ import type { queueAsPromised } from "fastq";
 
 const RETRY_INTERVAL_MS = 5000;
 const WORKER_CONCURRENCY = 1;
-const MAX_RETRIES = 5;
+const MAX_RETRIES = 10;
 
 type Command = {
   action: Function;
