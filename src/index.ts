@@ -14,12 +14,8 @@ if (argv.toggle) {
 
 function init(): void {
   camera.watchCameraLogs({
-    onData: async (cameraState: string) => {
-      updateKeylightState(cameraState);
-    },
-    onError: (error: any) => {
-      logger.error(error);
-    },
+    onData: updateKeylightState,
+    onError: (error: any) => logger.error(error),
   });
 }
 
