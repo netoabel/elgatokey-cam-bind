@@ -1,12 +1,12 @@
 import * as camera from "./camera";
 import * as keylight from "./keylight";
 import * as worker from "./worker";
+import * as argv from "./util/argv";
 import { logger } from "./util/logger";
-import yargs from "yargs/yargs";
 
-const argv = parseArgv();
+const args = argv.parseArgv();
 
-if (argv.toggle) {
+if (args.toggle) {
   worker.run({ action: keylight.toggleState });
 } else {
   init();
@@ -29,12 +29,4 @@ function updateKeylightState(newState: string): void {
 
 function toBoolean(state: string) {
   return state === "On";
-}
-
-function parseArgv(): any {
-  return yargs(process.argv.slice(2))
-    .options({
-      toggle: { type: "boolean", default: false },
-    })
-    .parseSync();
 }
