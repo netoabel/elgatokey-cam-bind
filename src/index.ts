@@ -20,22 +20,15 @@ function init(): void {
 }
 
 function updateKeylightState(newState: string): void {
-  switch (newState) {
-    case "On":
-      worker.run({
-        action: async () => {
-          await keylight.setState(true);
-        },
-      });
-      break;
-    case "Off":
-      worker.run({
-        action: async () => {
-          await keylight.setState(false);
-        },
-      });
-      break;
-  }
+  worker.run({
+    action: async () => {
+      await keylight.setState(toBoolean(newState));
+    },
+  });
+}
+
+function toBoolean(state: string) {
+  return state === "On";
 }
 
 function parseArgv(): any {
