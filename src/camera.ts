@@ -1,4 +1,4 @@
-import { logger } from "./util/logger/logger";
+import { logger } from "./util/logger";
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import os from "os";
 
@@ -57,7 +57,7 @@ function watchCameraLogsLinux(callbacks: CameraLogCallbacks): void {
 
 function wacthStdout(
   process: ChildProcessWithoutNullStreams,
-  callbacks: CameraLogCallbacks
+  callbacks: CameraLogCallbacks,
 ): void {
   process.stdout.setEncoding("utf8");
   process.stdout.on("data", (data: string) => {
@@ -97,7 +97,7 @@ function spawnCameraStreamProcessMac(): ChildProcessWithoutNullStreams {
 }
 
 function spawnCameraStreamProcessLinux(
-  deviceName: string
+  deviceName: string,
 ): ChildProcessWithoutNullStreams {
   return spawn("lsof", ["-r", "1", `/dev/${deviceName}`]);
 }

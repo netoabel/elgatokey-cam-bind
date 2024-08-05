@@ -1,5 +1,5 @@
 import fastq from "fastq";
-import { logger } from "./util/logger/logger";
+import { logger } from "./util/logger";
 import type { queueAsPromised } from "fastq";
 
 const RETRY_INTERVAL_MS = 5000;

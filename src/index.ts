@@ -1,7 +1,7 @@
 import * as camera from "./camera";
 import * as keylight from "./keylight";
 import * as worker from "./worker";
-import { logger } from "./util/logger/logger";
+import { logger } from "./util/logger";
 import yargs from "yargs/yargs";
 
 const argv = parseArgv();

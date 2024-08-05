@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as http from "http";
-import { logger } from "./util/logger/logger";
+import { logger } from "./util/logger";
 
 const REQUEST_TIMEOUT_MS = 3000;
 const KEYLIGHT_URL =
