@@ -7,11 +7,7 @@ import yargs from "yargs/yargs";
 const argv = parseArgv();
 
 if (argv.toggle) {
-  worker.run({
-    action: async () => {
-      await keylight.toggleState();
-    },
-  });
+  worker.run({ action: keylight.toggleState });
 } else {
   init();
 }
