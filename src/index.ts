@@ -6,8 +6,13 @@ import { logger } from "./util/logger";
 
 const args = argv.parseArgv();
 
-if (args.toggle) {
-  worker.run({ action: keylight.toggleState });
+if (Object.keys(args).length > 2) {
+  worker.run({
+    action: () => {
+      if (args.toggle) keylight.toggleState();
+      if (args.brightness) keylight.setBrightness(args.brightness);
+    },
+  });
 } else {
   init();
 }
