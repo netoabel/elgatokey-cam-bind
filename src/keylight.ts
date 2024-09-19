@@ -10,27 +10,23 @@ const agentForHttp4: http.Agent = new http.Agent({ family: 4 });
 
 async function setState(state: boolean): Promise<void> {
   logger.info(`Setting keylight state to: ${state}`);
-  sendCommand({ on: state });
+  await sendCommand({ on: state });
 }
 
 async function setBrightness(brightness: number): Promise<void> {
   logger.info(`Setting keylight brightness to: ${brightness}`);
-  sendCommand({ brightness: brightness });
+  await sendCommand({ brightness: brightness });
 }
 
 async function sendCommand(command: { brightness?: number; on?: boolean }) {
-  try {
-    await axios.put(
-      KEYLIGHT_URL,
-      { lights: [command] },
-      {
-        httpAgent: agentForHttp4,
-        timeout: REQUEST_TIMEOUT_MS,
-      },
-    );
-  } catch (error: any) {
-    logger.error(`Error sending command: ${error.message}`);
-  }
+  await axios.put(
+    KEYLIGHT_URL,
+    { lights: [command] },
+    {
+      httpAgent: agentForHttp4,
+      timeout: REQUEST_TIMEOUT_MS,
+    },
+  );
 }
 
 async function toggleState(): Promise<void> {
