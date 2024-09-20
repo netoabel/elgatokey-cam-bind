@@ -15,11 +15,11 @@ function init(): void {
 function updateKeylightState(newState: string): void {
   worker.run({
     action: async () => {
-      await keylight.setState(toBoolean(newState));
+      await keylight.setState({ on: toBinary(newState) });
     },
   });
 }
 
-function toBoolean(state: string) {
-  return state === "On";
+function toBinary(state: string): number {
+  return state === "On" ? 1 : 0;
 }

@@ -8,20 +8,24 @@ const KEYLIGHT_URL =
 
 const agentForHttp4: http.Agent = new http.Agent({ family: 4 });
 
-async function setState(state: boolean): Promise<void> {
-  logger.info(`Setting keylight state to: ${state}`);
-  await sendCommand({ on: state });
+interface KeyLightState {
+  on: number;
+  brightness: number;
+  temperature: number;
 }
+
+interface State extends Partial<KeyLightState> {}
 
 async function setBrightness(brightness: number): Promise<void> {
   logger.info(`Setting keylight brightness to: ${brightness}`);
-  await sendCommand({ brightness: brightness });
+  await setState({ brightness: brightness });
 }
 
-async function sendCommand(command: { brightness?: number; on?: boolean }) {
+async function setState(state: State) {
+  logger.info(`Setting keylight state to: ${JSON.stringify(state)}`);
   await axios.put(
     KEYLIGHT_URL,
-    { lights: [command] },
+    { lights: [state] },
     {
       httpAgent: agentForHttp4,
       timeout: REQUEST_TIMEOUT_MS,
@@ -30,21 +34,19 @@ async function sendCommand(command: { brightness?: number; on?: boolean }) {
 }
 
 async function toggleState(): Promise<void> {
-  const currentState: boolean | void = await getCurrentState();
-  const newState: boolean = !currentState;
-  await setState(newState);
+  const state: KeyLightState | void = await getCurrentState();
+  state.on = 1 - state.on;
+  await setState({ on: state.on });
 }
 
-async function getCurrentState(): Promise<boolean | void> {
+async function getCurrentState(): Promise<KeyLightState> {
   let state: boolean | undefined;
 
   const res = await axios.get(KEYLIGHT_URL, {
     httpAgent: agentForHttp4,
     timeout: REQUEST_TIMEOUT_MS,
   });
-  state = !!+res?.data?.lights[0]?.on;
-
-  return state;
+  return res?.data?.lights[0];
 }
 
 export { setBrightness, setState, toggleState };
