@@ -4,10 +4,10 @@
   "description": "An application to control Elgato Key Light and bind it to camera activity",
   "main": "./src/index.ts",
   "scripts": {
-    "pre-compile": "npx tsc && ncc build -o dist/lib/ncc dist/lib/index.js",
-    "build-macos": "npm run pre-compile && pkg --target node18-macos-x64 -o dist/macos/elgatokeycam ./dist/lib/ncc/index.js",
-    "build-linux": "npm run pre-compile && pkg --target node18-linux-x64 -o dist/linux/elgatokeycam ./dist/lib/ncc/index.js",
-    "build-linux-arm64": "npm run pre-compile && pkg --target node18-linux-arm64 -o dist/linux-arm64/elgatokeycam ./dist/lib/ncc/index.js",
+    "pre-compile": "npx tsc && ncc build -o dist/lib/ncc-daemon dist/lib/index.js && ncc build -o dist/lib/ncc-cli dist/lib/cli.js",
+    "build-macos": "npm run pre-compile && pkg --target node18-macos-x64 -o dist/macos/elgatokeycam ./dist/lib/ncc-daemon/index.js && pkg --target node18-macos-x64 -o dist/macos/elgatocli ./dist/lib/ncc-cli/index.js",
+    "build-linux": "npm run pre-compile && pkg --target node18-linux-x64 -o dist/linux/elgatokeycam ./dist/lib/ncc-daemon/index.js && pkg --target node18-linux-x64 -o dist/linux/elgatocli ./dist/lib/ncc-cli/index.js",
+    "build-linux-arm64": "npm run pre-compile && pkg --target node18-linux-arm64 -o dist/linux-arm64/elgatokeycam ./dist/lib/ncc-daemon/index.js && pkg --target node18-linux-arm64 -o dist/linux-arm64/elgatocli ./dist/lib/ncc-cli/index.js",
     "dev": "nodemon ./src/index.ts"
   },
   "repository": {
@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/netoabel/elgatokey-cam-bind#readme",
   "dependencies": {
+    "@commander-js/extra-typings": "^12.1.0",
     "axios": "^1.7.4",
+    "commander": "^12.1.0",
     "fastq": "^1.17.1",
     "winston": "^3.13.1",
     "winston-daily-rotate-file": "^4.7.1",

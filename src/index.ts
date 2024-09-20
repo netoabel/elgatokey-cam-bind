@@ -1,21 +1,9 @@
 import * as camera from "./camera";
 import * as keylight from "./keylight";
 import * as worker from "./worker";
-import * as argv from "./util/argv";
 import { logger } from "./util/logger";
 
-const args = argv.parseArgv();
-
-if (Object.keys(args).length > 2) {
-  worker.run({
-    action: () => {
-      if (args.toggle) keylight.toggleState();
-      if (args.brightness) keylight.setBrightness(args.brightness);
-    },
-  });
-} else {
-  init();
-}
+init();
 
 function init(): void {
   camera.watchCameraLogs({

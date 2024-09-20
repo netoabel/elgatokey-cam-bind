@@ -38,12 +38,11 @@ async function toggleState(): Promise<void> {
 async function getCurrentState(): Promise<boolean | void> {
   let state: boolean | undefined;
 
-  try {
-    const res = await axios.get(KEYLIGHT_URL, { httpAgent: agentForHttp4 });
-    state = !!+res?.data?.lights[0]?.on;
-  } catch (err: any) {
-    logger.error(err.message);
-  }
+  const res = await axios.get(KEYLIGHT_URL, {
+    httpAgent: agentForHttp4,
+    timeout: REQUEST_TIMEOUT_MS,
+  });
+  state = !!+res?.data?.lights[0]?.on;
 
   return state;
 }
