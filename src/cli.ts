@@ -47,14 +47,18 @@ brightness
 
 brightness
   .command("decrease")
-  .description("[coming soon] decreases the brightness")
+  .description("decreases the brightness")
   .option(
     "-b, --by <number>",
     "amount of brightness to reduce from the current value",
     "1",
   )
-  .action((options) => {
-    console.log(`Decrease brightnes by ${options.by}`);
+  .action(async (options) => {
+    try {
+      await keylight.decreaseBrightness(parseInt(options.by));
+    } catch (err: any) {
+      logger.error(`Error decreasing the brightness: ${err.message}`);
+    }
   });
 
 program.parse();
