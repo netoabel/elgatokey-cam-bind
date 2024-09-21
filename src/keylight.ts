@@ -21,6 +21,17 @@ async function setBrightness(brightness: number): Promise<void> {
   await setState({ brightness: brightness });
 }
 
+async function increaseBrightness(by: number): Promise<void> {
+  logger.info(`Increasing keylight brightness by: ${by}`);
+  const state: KeyLightState | void = await getCurrentState();
+  await setState({ brightness: state.brightness + by });
+}
+
+async function toggleState(): Promise<void> {
+  const state: KeyLightState | void = await getCurrentState();
+  await setState({ on: 1 - state.on });
+}
+
 async function setState(state: State) {
   logger.info(`Setting keylight state to: ${JSON.stringify(state)}`);
   await axios.put(
@@ -33,12 +44,6 @@ async function setState(state: State) {
   );
 }
 
-async function toggleState(): Promise<void> {
-  const state: KeyLightState | void = await getCurrentState();
-  state.on = 1 - state.on;
-  await setState({ on: state.on });
-}
-
 async function getCurrentState(): Promise<KeyLightState> {
   let state: boolean | undefined;
 
@@ -49,4 +54,4 @@ async function getCurrentState(): Promise<KeyLightState> {
   return res?.data?.lights[0];
 }
 
-export { setBrightness, setState, toggleState };
+export { setBrightness, setState, toggleState, increaseBrightness };

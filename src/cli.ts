@@ -31,14 +31,18 @@ brightness
 
 brightness
   .command("increase")
-  .description("[coming soon] increases the brightness")
+  .description("increases the brightness")
   .option(
     "-b, --by <number>",
     "amount of brightness to add to the current value",
     "1",
   )
-  .action((options) => {
-    console.log(`Increase brightnes by ${options.by}`);
+  .action(async (options) => {
+    try {
+      await keylight.increaseBrightness(parseInt(options.by));
+    } catch (err: any) {
+      logger.error(`Error increasing the brightness: ${err.message}`);
+    }
   });
 
 brightness
