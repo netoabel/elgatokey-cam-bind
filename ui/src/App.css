@@ -1,0 +1,28 @@
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+.card {
+  width: 350px;
+  margin: 0 auto;
+}
+
+.app-drag {
+  -webkit-app-region: drag !important;
+  app-region: drag !important;
+  cursor: move;
+}
+
+.app-no-drag {
+  -webkit-app-region: no-drag !important;
+  app-region: no-drag !important;
+}
+
+.titlebar {
+  height: 40px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+

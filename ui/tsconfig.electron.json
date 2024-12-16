@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": false,
+    "strict": true,
+    "outDir": "electron-dist",
+    "rootDir": "../",
+    "noEmitOnError": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "electron/**/*",
+    "../src/keylight.ts"
+  ]
+}
+
