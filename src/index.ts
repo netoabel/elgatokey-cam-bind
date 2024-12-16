@@ -1,7 +1,9 @@
 import * as camera from "./camera";
-import * as keylight from "./keylight";
+import { KeyLight } from "elgato-keylight";
 import * as worker from "./worker";
 import { logger } from "./util/logger";
+
+const keylight = new KeyLight();
 
 init();
 

@@ -1,6 +1,8 @@
 import { program } from "@commander-js/extra-typings";
-import * as keylight from "./keylight";
+import { KeyLight } from "elgato-keylight";
 import { logger } from "./util/logger";
+
+const keylight = new KeyLight();
 
 program
   .command("toggle")
@@ -13,9 +15,7 @@ program
     }
   });
 
-const brightness = program
-  .command("brightness")
-  .description("changes the brightness settings");
+const brightness = program.command("brightness").description("changes the brightness settings");
 
 brightness
   .command("set")
@@ -32,11 +32,7 @@ brightness
 brightness
   .command("increase")
   .description("increases the brightness")
-  .option(
-    "-b, --by <number>",
-    "amount of brightness to add to the current value",
-    "1",
-  )
+  .option("-b, --by <number>", "amount of brightness to add to the current value", "1")
   .action(async (options) => {
     try {
       await keylight.increaseBrightness(parseInt(options.by));
@@ -48,11 +44,7 @@ brightness
 brightness
   .command("decrease")
   .description("decreases the brightness")
-  .option(
-    "-b, --by <number>",
-    "amount of brightness to reduce from the current value",
-    "1",
-  )
+  .option("-b, --by <number>", "amount of brightness to reduce from the current value", "1")
   .action(async (options) => {
     try {
       await keylight.decreaseBrightness(parseInt(options.by));
