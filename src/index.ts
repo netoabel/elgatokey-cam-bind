@@ -3,7 +3,7 @@ import * as worker from "./worker";
 import { logger } from "./util/logger";
 import * as camera from "camera-watch";
 
-const keylight = new KeyLight("localhost", 9123);
+const keylight = new KeyLight();
 
 init();
 
