@@ -1,15 +1,15 @@
-import * as camera from "./camera";
 import { KeyLight } from "elgato-keylight";
 import * as worker from "./worker";
 import { logger } from "./util/logger";
+import * as camera from "camera-watch";
 
-const keylight = new KeyLight();
+const keylight = new KeyLight("localhost", 9123);
 
 init();
 
 function init(): void {
-  camera.watchCameraLogs({
-    onData: updateKeylightState,
+  camera.watch({
+    onChange: updateKeylightState,
     onError: (error: any) => logger.error(error),
   });
 }

@@ -26,16 +26,14 @@
   "homepage": "https://github.com/netoabel/elgatokey-cam-bind#readme",
   "dependencies": {
     "@commander-js/extra-typings": "^12.1.0",
-    "axios": "^1.7.9",
+    "camera-watch": "^1.0.4",
     "commander": "^12.1.0",
     "elgato-keylight": "^1.0.0",
     "fastq": "^1.17.1",
     "winston": "^3.13.1",
-    "winston-daily-rotate-file": "^4.7.1",
-    "yargs": "^17.7.2"
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
-    "@types/yargs": "^17.0.32",
     "nodemon": "^3.1.4",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.5.4"
