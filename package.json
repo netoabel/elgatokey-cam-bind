@@ -26,7 +26,7 @@
   "homepage": "https://github.com/netoabel/elgatokey-cam-bind#readme",
   "dependencies": {
     "@commander-js/extra-typings": "^12.1.0",
-    "camera-watch": "^1.0.4",
+    "camera-watch": "^1.0.5",
     "commander": "^12.1.0",
     "elgato-keylight": "^1.0.0",
     "fastq": "^1.17.1",
